@@ -1,24 +1,47 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:list_app/presentation/favorite/favorite_page.dart';
-import 'package:list_app/presentation/top/top_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:list_app/route/router.gr.dart';
 
-class BottomNavigationPage extends StatefulWidget{
+@RoutePage()
+class BottomNavigationPage extends ConsumerStatefulWidget {
   const BottomNavigationPage({super.key});
 
   @override
-  State<BottomNavigationPage> createState() => _BottomNavigationState();
-  
+  ConsumerState<BottomNavigationPage> createState() => _BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigationPage>{
-  static const _screens = [
-    TopPage(),
-    FavoritePage(),
-  ];
+class _BottomNavigationState extends ConsumerState<BottomNavigationPage>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text("Hello World!"),),
+    return AutoTabsRouter(
+      routes: const [
+        TopRoute(),
+        FavoriteRoute(),
+      ],
+      transitionBuilder: (context, child, animation) => child,
+      builder: (context, child) {
+        final tabsRouter = AutoTabsRouter.of(context);
+
+        return Scaffold(
+          body: child,
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: tabsRouter.activeIndex,
+            onTap: tabsRouter.setActiveIndex,
+            items: const [
+              BottomNavigationBarItem(
+                label: 'トップ',
+                icon: Icon(Icons.home),
+              ),
+              BottomNavigationBarItem(
+                label: 'スター',
+                icon: Icon(Icons.star),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
