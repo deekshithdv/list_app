@@ -1,6 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:list_app/presentation/bottom_navigation_page.dart';
+import 'package:list_app/route/router.dart';
 
 void main() {
   runApp(
@@ -15,13 +16,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    final appRouter = AppRouter();
+    return MaterialApp.router(
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const BottomNavigationPage(),
+      routerDelegate: AutoRouterDelegate(
+        appRouter,
+        navigatorObservers: () => [AppRouteObserver()],
+      ),
+      routeInformationProvider: appRouter.routeInfoProvider(),
+      routeInformationParser: appRouter.defaultRouteParser(),
     );
   }
 }
