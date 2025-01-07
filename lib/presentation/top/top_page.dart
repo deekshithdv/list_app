@@ -12,8 +12,24 @@ class TopPage extends StatefulWidget {
 class _TopPageState extends State<TopPage> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Top page"),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('トップ'),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const TextField(
+              decoration: InputDecoration(
+                  hintText: 'Search here',
+                  filled: true,
+                  border: OutlineInputBorder()),
+            ),
+            TextButton(onPressed: () {}, child: const Text('検索'))
+          ],
+        ),
+      ),
     );
   }
 }
